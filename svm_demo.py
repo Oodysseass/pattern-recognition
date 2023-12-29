@@ -30,8 +30,8 @@ temp_svm = SVC(kernel='rbf')
 
 # hyper-parameters
 parameters = {
-    'C': [0.1, 1, 10, 100],
-    'gamma': [0.01, 0.1, 1, 10],
+    'C': [0.1, 1.0, 10.0, 100.0],
+    'gamma': ['auto', 0.01, 0.1, 1, 10],
 }
 
 # cv
@@ -47,4 +47,15 @@ pred = svm_rbf.predict(test_x)
 accuracy = accuracy_score(test_y, pred)
 misses = len(pred[pred != test_y])
 print("Misclassified:", len(pred[pred != test_y]), "samples")
-print(f"Accuracy: {accuracy * 100:.2f}%")
+print(f"Accuracy: {accuracy * 100:.2f}%\n")
+
+print("|---------------DEFAULT SVM--------------|")
+default_svm = SVC(kernel='rbf', gamma='auto')
+
+default_svm.fit(train_x, train_y)
+pred = default_svm.predict(test_x)
+
+accuracy = accuracy_score(test_y, pred)
+misses = len(pred[pred != test_y])
+print("Misclassified:", len(pred[pred != test_y]), "samples")
+print(f"Accuracy: {accuracy * 100:.2f}%\n")
