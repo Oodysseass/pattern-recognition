@@ -1,30 +1,15 @@
-import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
+
 from bayes_functions import estimate_means, test_bayes, plot_bayes
+from data import load_data
 
 
-## load data
-custom_columns = ['feature 1', 'feature 2', 'label']
-data_file = pd.read_csv("./dataset.csv", header=None, names=custom_columns)
-data_file = data_file.dropna()
-
-#data_file['label'].plot(kind='hist', bins=[0.75, 1.25, 1.75, 2.25, 2.75, 3.25])
-#plt.show()
-
-# make train and test sets
-data_x = np.array(data_file.drop('label', axis=1))
-data_y = np.array(data_file['label'])
-num_features = data_x.shape[1]
-num_classes = max(data_y)
-
-train_x, test_x, train_y, test_y = train_test_split(data_x, data_y,
-                                                    test_size=0.5,
-                                                    stratify=data_y,
-                                                    random_state=42)
+train_x, test_x, train_y, test_y = load_data("dataset.csv", 0.5)
 
 train_data = np.concatenate([train_x, train_y.reshape(-1, 1)], axis=1)
 test_data = np.concatenate([test_x, test_y.reshape(-1, 1)], axis=1)
+num_features = train_x.shape[1]
+num_classes = max(train_y)
 
 
 ## maximum likelihood
@@ -60,6 +45,7 @@ for i in range(num_classes):
 # test model
 pred = test_bayes(p, means, cov_mats, test_x, num_classes)
 plot_bayes(test_x, test_y, pred, p, means, cov_mats)
+misses = len(pred[pred != test_y])
 
 print("Misclassified:", len(pred[pred != test_y]), "samples")
 print(f"Accuracy: {(len(test_y) - misses) / len(test_y): .2f}%")
