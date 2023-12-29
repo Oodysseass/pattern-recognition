@@ -26,8 +26,7 @@ def estimate_means(num_classes, num_features, train_data):
     return means
 
 # tests bayes model
-def test_bayes(p, means, cov_mats, test_x):
-    test_x
+def test_bayes(p, means, cov_mats, test_x, num_classes):
     pred_y = np.zeros(test_x.shape[0])
 
     for i in range(len(pred_y)):
@@ -54,7 +53,7 @@ def plot_bayes(test_x, test_y, pred, p, means, cov_mats):
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
     temp_x = np.stack((xx.flatten(), yy.flatten()), axis=0).T
 
-    zz = test_bayes(p, means, cov_mats, temp_x)
+    zz = test_bayes(p, means, cov_mats, temp_x, 3)
     plt.scatter(temp_x[:, 0], temp_x[:, 1], c=[colors[label] for label in zz])
 
     ## plot results
@@ -110,7 +109,7 @@ for i in range(num_classes):
     p[i] = len(train_data[train_y == i + 1]) / len(train_data)
 
 # test model
-pred = test_bayes(p, means, cov_mats, test_x)
+pred = test_bayes(p, means, cov_mats, test_x, num_classes)
 plot_bayes(test_x, test_y, pred, p, means, cov_mats)
 
 
@@ -120,6 +119,6 @@ for i in range(num_classes):
     cov_mats[i] = np.cov(train_x[train_y == i + 1].T)
 
 # test model
-pred = test_bayes(p, means, cov_mats, test_x)
+pred = test_bayes(p, means, cov_mats, test_x, num_classes)
 plot_bayes(test_x, test_y, pred, p, means, cov_mats)
 
