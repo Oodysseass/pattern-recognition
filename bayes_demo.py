@@ -46,6 +46,10 @@ for i in range(num_classes):
 # test model
 pred = test_bayes(p, means, cov_mats, test_x, num_classes)
 plot_bayes(test_x, test_y, pred, p, means, cov_mats)
+misses = len(pred[pred != test_y])
+
+print("Misclassified:", misses, "samples")
+print(f"Accuracy: {(len(test_y) - misses) / len(test_y): .2f}%")
 
 
 ## different covariance matrix for each class
@@ -57,3 +61,5 @@ for i in range(num_classes):
 pred = test_bayes(p, means, cov_mats, test_x, num_classes)
 plot_bayes(test_x, test_y, pred, p, means, cov_mats)
 
+print("Misclassified:", len(pred[pred != test_y]), "samples")
+print(f"Accuracy: {(len(test_y) - misses) / len(test_y): .2f}%")
