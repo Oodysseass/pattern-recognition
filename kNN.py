@@ -10,11 +10,9 @@ Original file is located at
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib.lines import Line2D
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import ConfusionMatrixDisplay
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.inspection import DecisionBoundaryDisplay
-import seaborn as sns
 
 from data import load_data
 
@@ -25,6 +23,8 @@ train_x, test_x, train_y, test_y = load_data("dataset.csv", 0.5)
 train_data = np.concatenate([train_x, train_y.reshape(-1, 1)], axis=1)
 test_data = np.concatenate([test_x, test_y.reshape(-1, 1)], axis=1)
 
+fig, axs = plt.subplots(5, 4, figsize=(10, 10), layout='tight')
+row, col = [0, 0]
 for k in range(10):
   ## K-NN to the training set
   classifier = KNeighborsClassifier(n_neighbors=k+1, weights='uniform')
@@ -33,24 +33,20 @@ for k in range(10):
   # predict test results
   pred_y = classifier.predict(test_x)
 
-  ## Making Confusion Matrix
-  cm = confusion_matrix( test_y, pred_y)
-
-  cm_df = pd.DataFrame(cm,
-                     index = ['1','2','3'],
-                     columns = ['1','2','3'])
-
   ## Plots
   # Plotting the confusion matrix
-  plt.figure()
-  sns.heatmap(cm_df, annot=True)
-  plt.title('Confusion Matrix')
-  plt.ylabel('Actal Values')
-  plt.xlabel('Predicted Values')
-  plt.show()
+  ConfusionMatrixDisplay.from_predictions(test_y, pred_y, ax=axs[row, col])
+  axs[row, col].set_title('Confusion Matrix')
+  axs[row, col].set_ylabel('Actual Values')
+  axs[row, col].set_xlabel('Predicted Values')
+  col += 1
 
   # Plotting boundary regions
-  fig = DecisionBoundaryDisplay.from_estimator(classifier, train_x)
-  plt.title('Decision Regions for k={} on Training Data'.format(k+1))
-  plt.show()
+  DecisionBoundaryDisplay.from_estimator(classifier, train_x, ax=axs[row, col])
+  axs[row, col].scatter(test_x[:, 0], test_x[:, 1], s=25, c=test_y, edgecolor='k')
+  axs[row, col].set_title(f'Decision regions for k={k + 1}')
 
+  col = (col + 1) % 4
+  row = row + 1 if col == 0 else row
+
+plt.show()
