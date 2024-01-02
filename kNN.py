@@ -10,7 +10,7 @@ Original file is located at
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.inspection import DecisionBoundaryDisplay
 
@@ -32,6 +32,7 @@ for k in range(10):
 
   # predict test results
   pred_y = classifier.predict(test_x)
+  acc = accuracy_score(test_y, pred_y)
 
   ## Plots
   # Plotting the confusion matrix
@@ -44,7 +45,7 @@ for k in range(10):
   # Plotting boundary regions
   DecisionBoundaryDisplay.from_estimator(classifier, train_x, ax=axs[row, col])
   axs[row, col].scatter(test_x[:, 0], test_x[:, 1], s=25, c=test_y, edgecolor='k')
-  axs[row, col].set_title(f'Decision regions for k={k + 1}')
+  axs[row, col].set_title(f'k={k + 1}, error={1 - acc:.2f}%')
 
   col = (col + 1) % 4
   row = row + 1 if col == 0 else row
