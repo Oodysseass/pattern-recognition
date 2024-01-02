@@ -45,7 +45,7 @@ for k in range(10):
   # Plotting boundary regions
   DecisionBoundaryDisplay.from_estimator(classifier, train_x, ax=axs[row, col])
   axs[row, col].scatter(test_x[:, 0], test_x[:, 1], s=25, c=test_y, edgecolor='k')
-  axs[row, col].set_title(f'k={k + 1}, error={1 - acc:.2f}%')
+  axs[row, col].set_title(f'k={k + 1}, error={100 * (1 - acc):.2f}%')
 
   col = (col + 1) % 4
   row = row + 1 if col == 0 else row
