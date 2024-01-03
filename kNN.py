@@ -7,7 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1Enu1Y_3dP3mNXdYA26T5gjwqwLSxaZ2J
 """
 
-import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score, ConfusionMatrixDisplay
@@ -38,8 +37,6 @@ for k in range(10):
   # Plotting the confusion matrix
   ConfusionMatrixDisplay.from_predictions(test_y, pred_y, ax=axs[row, col])
   axs[row, col].set_title('Confusion Matrix')
-  axs[row, col].set_ylabel('Actual Values')
-  axs[row, col].set_xlabel('Predicted Values')
   col += 1
 
   # Plotting boundary regions
