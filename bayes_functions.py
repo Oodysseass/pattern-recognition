@@ -4,7 +4,7 @@ from matplotlib.lines import Line2D
 from scipy.spatial.distance import mahalanobis
 from math import pi
 
-# calculate p(x|w_i) * p(w_i) with assumed normal of p(x|w_i)
+# calculate p(x|w_i) * p(w_i) with assumed normal distribution of p(x|w_i)
 def bayes(sample, priori, mean, cov):
     distance = mahalanobis(sample, mean, np.linalg.inv(cov))
     p_x_i = 1 / (2 * pi * np.linalg.det(cov) ** (1 / 2)) * np.exp(- 1 / 2 * distance)
@@ -36,7 +36,7 @@ def test_bayes(p, means, cov_mats, test_x, num_classes):
 
     return pred_y
 
-# plot decision regions and wrongs
+# plot decision regions and results
 def plot_bayes(test_x, test_y, pred, p, means, cov_mats):
     ## get mismatches
     mismatches = test_y != pred

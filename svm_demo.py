@@ -45,7 +45,7 @@ test_data = np.concatenate([test_x, test_y.reshape(-1, 1)], axis=1)
 
 
 # linear svm classifier
-svm = SVC(kernel='linear')
+svm = SVC(kernel='linear', random_state=42)
 svm.fit(train_x, train_y)
 
 pred = svm.predict(test_x)
@@ -60,7 +60,7 @@ print(f"Accuracy: {accuracy * 100:.2f}%\n")
 
 ## RBF svm
 print("|---------------SVM RBF--------------|")
-temp_svm = SVC(kernel='rbf')
+temp_svm = SVC(kernel='rbf', random_state=42)
 
 # hyper-parameters
 parameters = {
@@ -86,7 +86,7 @@ plot_svm(svm_rbf, train_x, test_x, test_y, pred)
 
 
 print("|---------------DEFAULT SVM--------------|")
-default_svm = SVC(kernel='rbf', gamma='auto')
+default_svm = SVC(gamma='auto', random_state=42)
 
 default_svm.fit(train_x, train_y)
 pred = default_svm.predict(test_x)
